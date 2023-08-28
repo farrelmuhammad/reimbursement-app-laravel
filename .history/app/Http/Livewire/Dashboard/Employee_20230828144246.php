@@ -10,9 +10,7 @@ use Livewire\Component;
 class Employee extends Component
 {
     protected $listeners = [
-        'updateEmployee' => 'updateEmployee',
-        'getDetailById' => 'getDetailById',
-        'deleteEmployee' => 'deleteEmployee'
+        'updateEmployee' => 'updateEmployee'
     ];
 
     public $nip_employee;
@@ -37,20 +35,24 @@ class Employee extends Component
             'password' => 'required|min:6',
         ]);
 
+        // Hash the password
         $hashedPassword = Hash::make($this->password);
 
+        // Create the user
         \App\Models\User::create([
             'nip' => $this->nip_employee,
-            'nama' => $this->employee_name,
+            'nama' => $this->employee_name, // Provide the 'nama' value from the form input
             'jabatan' => $this->jabatan,
             'password' => $hashedPassword,
         ]);
 
+        // Clear form fields
         $this->nip_employee = '';
-        $this->employee_name = '';
+        $this->employee_name = ''; // Reset the 'nama' field
         $this->jabatan = '';
         $this->password = '';
 
+        // Emit an event to indicate successful registration
         $this->emit('alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -58,32 +60,32 @@ class Employee extends Component
         ]);
     }
 
+
     public function getDetailById($id)
     {
-        $selectedEmployee = \App\Models\User::find($id);
+        $this->selectedEmployee = \App\Models\User::find($id);
 
-        if ($selectedEmployee) {
-            $this->selectedEmployee = [
-                'id' => $selectedEmployee->id,
-                'nip_employee' => $selectedEmployee->nip,
-                'employee_name' => $selectedEmployee->nama,
-                'jabatan' => $selectedEmployee->jabatan,
-            ];
+        if ($this->selectedEmployee) {
+            $this->employee_name = $this->selectedEmployee->nama;
+            $this->jabatan = $this->selectedEmployee->jabatan;
         }
     }
 
-
     public function updateEmployee($id)
     {
+        // Find the user by ID
         $user = \App\Models\User::find($id);
 
+        // If the user is found
         if ($user) {
+            // Validate the input
             $this->validate([
                 'employee_name' => 'required',
                 'jabatan' => 'required',
                 'password' => 'nullable|min:6',
             ]);
 
+            // Update user's information
             $user->nama = $this->employee_name;
             $user->jabatan = $this->jabatan;
 
@@ -94,29 +96,16 @@ class Employee extends Component
 
             $user->save();
 
+            // Clear form fields
             $this->employee_name = '';
             $this->jabatan = '';
             $this->password = '';
 
+            // Emit an event to indicate successful update
             $this->emit('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
                 'message' => 'User updated successfully.'
-            ]);
-        }
-    }
-
-    public function deleteEmployee($id)
-    {
-        $user = \App\Models\User::find($id);
-
-        if ($user) {
-            $user->delete();
-
-            $this->emit('alert', [
-                'type' => 'success',
-                'title' => 'Success!',
-                'message' => 'User deleted successfully.'
             ]);
         }
     }

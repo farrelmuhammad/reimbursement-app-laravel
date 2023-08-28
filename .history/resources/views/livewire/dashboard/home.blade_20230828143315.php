@@ -302,7 +302,7 @@
                                                                             disabled
                                                                             class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                                                     </div>
-
+                                                                    
                                                                     <div class="mt-6">
                                                                         <label for="deskripsi"
                                                                             class="block text-sm font-medium text-gray-700">Deskripsi</label>
@@ -321,6 +321,7 @@
                                                                             </a>
                                                                         @endif
                                                                     </div>
+
 
                                                                     {{-- <div class="mt-6" id="previewContainer"
                                                                         style="display: none;">

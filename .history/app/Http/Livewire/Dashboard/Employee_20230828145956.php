@@ -11,8 +11,7 @@ class Employee extends Component
 {
     protected $listeners = [
         'updateEmployee' => 'updateEmployee',
-        'getDetailById' => 'getDetailById',
-        'deleteEmployee' => 'deleteEmployee'
+        'getDetailById' => 'getDetailById'
     ];
 
     public $nip_employee;
@@ -37,20 +36,24 @@ class Employee extends Component
             'password' => 'required|min:6',
         ]);
 
+        // Hash the password
         $hashedPassword = Hash::make($this->password);
 
+        // Create the user
         \App\Models\User::create([
             'nip' => $this->nip_employee,
-            'nama' => $this->employee_name,
+            'nama' => $this->employee_name, // Provide the 'nama' value from the form input
             'jabatan' => $this->jabatan,
             'password' => $hashedPassword,
         ]);
 
+        // Clear form fields
         $this->nip_employee = '';
-        $this->employee_name = '';
+        $this->employee_name = ''; // Reset the 'nama' field
         $this->jabatan = '';
         $this->password = '';
 
+        // Emit an event to indicate successful registration
         $this->emit('alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -75,15 +78,19 @@ class Employee extends Component
 
     public function updateEmployee($id)
     {
+        // Find the user by ID
         $user = \App\Models\User::find($id);
 
+        // If the user is found
         if ($user) {
+            // Validate the input
             $this->validate([
                 'employee_name' => 'required',
                 'jabatan' => 'required',
                 'password' => 'nullable|min:6',
             ]);
 
+            // Update user's information
             $user->nama = $this->employee_name;
             $user->jabatan = $this->jabatan;
 
@@ -94,10 +101,12 @@ class Employee extends Component
 
             $user->save();
 
+            // Clear form fields
             $this->employee_name = '';
             $this->jabatan = '';
             $this->password = '';
 
+            // Emit an event to indicate successful update
             $this->emit('alert', [
                 'type' => 'success',
                 'title' => 'Success!',
@@ -108,11 +117,15 @@ class Employee extends Component
 
     public function deleteEmployee($id)
     {
+        // Find the user by ID
         $user = \App\Models\User::find($id);
 
+        // If the user is found
         if ($user) {
+            // Delete the user
             $user->delete();
 
+            // Emit an event to indicate successful deletion
             $this->emit('alert', [
                 'type' => 'success',
                 'title' => 'Success!',

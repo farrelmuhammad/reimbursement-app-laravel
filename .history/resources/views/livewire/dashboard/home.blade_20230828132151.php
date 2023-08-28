@@ -269,68 +269,99 @@
                                                                         <i class="fas fa-xmark"></i>
                                                                     </button>
                                                                 </div>
-                                                                @if ($selectedReimbursement)
+
+                                                                <!-- Display the details modal -->
+                                                                <x-jet-dialog-modal
+                                                                    wire:model="selectedReimbursementDetails">
+                                                                    <x-slot name="title">
+                                                                        Reimbursement Details
+                                                                    </x-slot>
+
+                                                                    <x-slot name="content">
+                                                                        @if ($selectedReimbursementDetails)
+                                                                            <p>Name:
+                                                                                {{ $selectedReimbursementDetails->nama_reimbursement }}
+                                                                            </p>
+                                                                            <p>Date:
+                                                                                {{ $selectedReimbursementDetails->tanggal }}
+                                                                            </p>
+                                                                            <!-- Add more details as needed -->
+                                                                        @endif
+                                                                    </x-slot>
+
+                                                                    <x-slot name="footer">
+                                                                        <x-jet-secondary-button
+                                                                            wire:click="$set('selectedReimbursementDetails', null)"
+                                                                            wire:loading.attr="disabled">
+                                                                            Close
+                                                                        </x-jet-secondary-button>
+                                                                    </x-slot>
+                                                                </x-jet-dialog-modal>
+
+
+                                                                <!-- Form Input -->
+                                                                {{-- <form wire:submit.prevent="submit"
+                                                                    enctype="multipart/form-data">
                                                                     <div class="mt-6">
                                                                         <label for="employee_name"
                                                                             class="block text-sm font-medium text-gray-700">Nama
                                                                             Karyawan</label>
                                                                         <input type="text" id="employee_name"
-                                                                            name="employee_name"
-                                                                            value="{{ $selectedReimbursement['employee_name'] }}"
-                                                                            disabled
+                                                                            name="employee_name" disabled
                                                                             class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                                                     </div>
 
                                                                     <div class="mt-6">
-                                                                        <label for="nama_reimbursement"
+                                                                        <label for="reimbursement_name"
                                                                             class="block text-sm font-medium text-gray-700">Nama
                                                                             Reimbursement</label>
-                                                                        <input type="text" id="nama_reimbursement"
-                                                                            name="nama_reimbursement"
-                                                                            value="{{ $selectedReimbursement['nama_reimbursement'] }}"
-                                                                            disabled
+                                                                        <input type="text" id="reimbursement_name"
+                                                                            name="reimbursement_name"
+                                                                            wire:model="reimbursement_name"
                                                                             class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                                                     </div>
 
                                                                     <div class="mt-6">
-                                                                        <label for="tanggal"
-                                                                            class="block text-sm font-medium text-gray-700">
+                                                                        <label for="date"
+                                                                            class="block text-sm font-medium text-gray-700">Pilih
                                                                             Tanggal</label>
-                                                                        <input type="date" id="tanggal"
-                                                                            name="tanggal"
-                                                                            value="{{ $selectedReimbursement['tanggal'] }}"
-                                                                            disabled
+                                                                        <input type="date" id="date"
+                                                                            name="date" wire:model="date"
                                                                             class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                                                     </div>
 
                                                                     <div class="mt-6">
-                                                                        <label for="deskripsi"
+                                                                        <label for="description"
                                                                             class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                                                                        <textarea id="deskripsi" name="deskripsi" rows="3" disabled
-                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">{{ $selectedReimbursement['deskripsi'] }}</textarea>
+                                                                        <textarea id="description" name="description" rows="3" wire:model="description"
+                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
                                                                     </div>
 
                                                                     <div class="mt-6">
-                                                                        @if ($selectedReimbursement)
-                                                                            <label for="file_pendukung"
-                                                                                class="block text-sm font-medium text-gray-700">File
-                                                                                Pendukung:</label>
-                                                                            <a href="{{ Storage::url('app/' . $selectedReimbursement['file_pendukung']) }}"
-                                                                                target="_blank">
-                                                                                Download File
-                                                                            </a>
-                                                                        @endif
+                                                                        <label for="document"
+                                                                            class="block text-sm font-medium text-gray-700">Upload
+                                                                            Dokumen</label>
+                                                                        <input type="file" id="document"
+                                                                            name="document" wire:model="document"
+                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                                                     </div>
 
-                                                                    {{-- <div class="mt-6" id="previewContainer"
-                                                                        style="display: none;">
-                                                                        <p>Preview:</p>
-                                                                        <div id="filePreview"></div>
-                                                                    </div> --}}
-                                                                @else
-                                                                    <p>No reimbursement selected.</p>
-                                                                @endif
+
+                                                                    <div class="flex justify-between mt-6 space-x-4">
+                                                                        <button @click="modalOpen_2 = false"
+                                                                            class="bg-gray-300 text-gray-700 active:bg-gray-500 text-sm font-bold px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none w-1/2 ease-linear transition-all duration-150 text-center cursor-pointer"
+                                                                            type="button">
+                                                                            Batal
+                                                                        </button>
+                                                                        <button type="submit"
+                                                                            class="bg-green-500 text-white active:bg-primary-3 text-sm font-bold px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none w-1/2 ease-linear transition-all duration-150 text-center cursor-pointer">
+                                                                            Submit
+                                                                        </button>
+                                                                    </div>
+                                                                </form> --}}
+
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -353,41 +384,6 @@
     </div>
 </div>
 <script>
-    document.getElementById('document').addEventListener('change', function() {
-        var fileInput = this;
-        var previewContainer = document.getElementById('previewContainer');
-        var filePreview = document.getElementById('filePreview');
-
-        previewContainer.style.display = 'none';
-
-        if (fileInput.files && fileInput.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                filePreview.innerHTML = '';
-
-                var extension = fileInput.files[0].name.split('.').pop().toLowerCase();
-                if (['jpg', 'jpeg', 'png'].indexOf(extension) !== -1) {
-                    var image = new Image();
-                    image.src = e.target.result;
-                    image.style.maxWidth = '100%';
-                    filePreview.appendChild(image);
-                } else if (extension === 'pdf') {
-                    var pdfEmbed = document.createElement('embed');
-                    pdfEmbed.src = e.target.result + '#toolbar=0&navpanes=0&scrollbar=0';
-                    pdfEmbed.type = 'application/pdf';
-                    pdfEmbed.style.width = '100%';
-                    pdfEmbed.style.height = '500px';
-                    filePreview.appendChild(pdfEmbed);
-                }
-
-                previewContainer.style.display = 'block';
-            };
-
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    });
-
     function actionReimbursement(id, string) {
         // console.log(id, string)
         Livewire.emit('updateStatus', id, string);

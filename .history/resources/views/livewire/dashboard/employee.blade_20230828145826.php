@@ -363,8 +363,8 @@
     }
 
     function deleteEmployee(id) {
-        // console.log(id)
-        Livewire.emit('deleteEmployee', id);
+        console.log(id)
+        // Livewire.emit('getDetail', id);
     }
 
     function submit() {

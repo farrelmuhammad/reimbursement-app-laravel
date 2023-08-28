@@ -11,8 +11,7 @@ class Employee extends Component
 {
     protected $listeners = [
         'updateEmployee' => 'updateEmployee',
-        'getDetailById' => 'getDetailById',
-        'deleteEmployee' => 'deleteEmployee'
+        'getDetailById' => 'getDetailById'
     ];
 
     public $nip_employee;

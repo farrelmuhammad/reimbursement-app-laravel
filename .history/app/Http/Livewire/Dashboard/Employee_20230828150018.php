@@ -11,8 +11,7 @@ class Employee extends Component
 {
     protected $listeners = [
         'updateEmployee' => 'updateEmployee',
-        'getDetailById' => 'getDetailById',
-        'deleteEmployee' => 'deleteEmployee'
+        'getDetailById' => 'getDetailById'
     ];
 
     public $nip_employee;
@@ -37,8 +36,10 @@ class Employee extends Component
             'password' => 'required|min:6',
         ]);
 
+        // Hash the password
         $hashedPassword = Hash::make($this->password);
 
+        // Create the user
         \App\Models\User::create([
             'nip' => $this->nip_employee,
             'nama' => $this->employee_name,
@@ -108,11 +109,15 @@ class Employee extends Component
 
     public function deleteEmployee($id)
     {
+        // Find the user by ID
         $user = \App\Models\User::find($id);
 
+        // If the user is found
         if ($user) {
+            // Delete the user
             $user->delete();
 
+            // Emit an event to indicate successful deletion
             $this->emit('alert', [
                 'type' => 'success',
                 'title' => 'Success!',

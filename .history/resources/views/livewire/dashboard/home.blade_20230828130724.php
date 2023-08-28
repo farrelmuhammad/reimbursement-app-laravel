@@ -228,112 +228,105 @@
                                                             onclick="actionReimbursement({{ $reimbursement->id }}, 'rejected')">Reject</button>
                                                     @endif
                                                 @endif
-                                                <div x-data="{ modalOpen_2: false }">
-                                                    <button @click="modalOpen_2 =!modalOpen_2"
-                                                        class="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
-                                                        wire:click="showDetails({{ $reimbursement->id }})">Details</button>
-                                                    <div x-show="modalOpen_2"
-                                                        class="fixed inset-0 z-50 overflow-y-auto"
-                                                        aria-labelledby="modal-title" role="dialog"
-                                                        aria-modal="true">
-                                                        <div
-                                                            class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
-                                                            <div x-cloak @click="modalOpen_2 = false"
-                                                                x-show="modalOpen_2"
-                                                                x-transition:enter="transition ease-out duration-300 transform"
-                                                                x-transition:enter-start="opacity-0"
-                                                                x-transition:enter-end="opacity-100"
-                                                                x-transition:leave="transition ease-in duration-200 transform"
-                                                                x-transition:leave-start="opacity-100"
-                                                                x-transition:leave-end="opacity-0"
-                                                                class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40"
-                                                                aria-hidden="true">
-                                                            </div>
+                                                <button
+                                                    class="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+                                                    onclick="showDetails({{ $reimbursement->id }})">Details</button>
+                                                      <!-- Tombol Ajukan Permohonan di pojok kanan -->
+                    <div x-data="{ modalOpen_2: false }">
+                        <button @click="modalOpen_2 =!modalOpen_2"
+                            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg">
+                            <i class="fa-solid fa-plus mr-2"></i>
+                            Ajukan Permohonan
+                        </button>
+                        <div x-show="modalOpen_2" class="fixed inset-0 z-50 overflow-y-auto"
+                            aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                            <div
+                                class="flex items-end justify-center min-h-screen px-4 text-center md:items-center sm:block sm:p-0">
+                                <div x-cloak @click="modalOpen_2 = false" x-show="modalOpen_2"
+                                    x-transition:enter="transition ease-out duration-300 transform"
+                                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                    x-transition:leave="transition ease-in duration-200 transform"
+                                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                    class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-40"
+                                    aria-hidden="true">
+                                </div>
 
-                                                            <div x-cloak x-show="modalOpen_2"
-                                                                x-transition:enter="transition ease-out duration-300 transform"
-                                                                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                                                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                                                                x-transition:leave="transition ease-in duration-200 transform"
-                                                                x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                                                                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                                                class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
-                                                                <div
-                                                                    class="flex items-center justify-between space-x-4">
-                                                                    <h1 class="text-xl font-medium text-gray-900">
-                                                                        Detail Reimbursement
-                                                                    </h1>
+                                <div x-cloak x-show="modalOpen_2"
+                                    x-transition:enter="transition ease-out duration-300 transform"
+                                    x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                    x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                                    x-transition:leave="transition ease-in duration-200 transform"
+                                    x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                                    x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                    class="inline-block w-full max-w-xl p-8 my-20 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl 2xl:max-w-2xl">
+                                    <div class="flex items-center justify-between space-x-4">
+                                        <h1 class="text-xl font-medium text-gray-900">Permohonan Reimbursement</h1>
 
-                                                                    <button @click="modalOpen_2 = false"
-                                                                        class="text-gray-900 focus:outline-none hover:text-gray-700">
-                                                                        <i class="fas fa-xmark"></i>
-                                                                    </button>
-                                                                </div>
-                                                                @if ($selectedReimbursement)
-                                                                    <div class="mt-6">
-                                                                        <label for="employee_name"
-                                                                            class="block text-sm font-medium text-gray-700">Nama
-                                                                            Karyawan</label>
-                                                                        <input type="text" id="employee_name"
-                                                                            name="employee_name"
-                                                                            value="{{ $selectedReimbursement['employee_name'] }}"
-                                                                            disabled
-                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                                                    </div>
+                                        <button @click="modalOpen_2 = false"
+                                            class="text-gray-900 focus:outline-none hover:text-gray-700">
+                                            <i class="fas fa-xmark"></i>
+                                        </button>
+                                    </div>
 
-                                                                    <div class="mt-6">
-                                                                        <label for="nama_reimbursement"
-                                                                            class="block text-sm font-medium text-gray-700">Nama
-                                                                            Reimbursement</label>
-                                                                        <input type="text" id="nama_reimbursement"
-                                                                            name="nama_reimbursement"
-                                                                            value="{{ $selectedReimbursement['nama_reimbursement'] }}"
-                                                                            disabled
-                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                                                    </div>
+                                    <!-- Form Input -->
+                                    <form wire:submit.prevent="submit" enctype="multipart/form-data">
+                                        <div class="mt-6">
+                                            <label for="employee_name"
+                                                class="block text-sm font-medium text-gray-700">Nama Karyawan</label>
+                                            <input type="text" id="employee_name" name="employee_name"
+                                                value="{{ Auth::user()->nama }}" disabled
+                                                class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                        </div>
 
-                                                                    <div class="mt-6">
-                                                                        <label for="tanggal"
-                                                                            class="block text-sm font-medium text-gray-700">
-                                                                            Tanggal</label>
-                                                                        <input type="date" id="tanggal"
-                                                                            name="tanggal"
-                                                                            value="{{ $selectedReimbursement['tanggal'] }}"
-                                                                            disabled
-                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                                                    </div>
+                                        <div class="mt-6">
+                                            <label for="reimbursement_name"
+                                                class="block text-sm font-medium text-gray-700">Nama
+                                                Reimbursement</label>
+                                            <input type="text" id="reimbursement_name" name="reimbursement_name"
+                                                wire:model="reimbursement_name"
+                                                class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                        </div>
 
-                                                                    <div class="mt-6">
-                                                                        <label for="deskripsi"
-                                                                            class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                                                                        <textarea id="deskripsi" name="deskripsi" rows="3" disabled
-                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">{{ $selectedReimbursement['deskripsi'] }}</textarea>
-                                                                    </div>
+                                        <div class="mt-6">
+                                            <label for="date" class="block text-sm font-medium text-gray-700">Pilih
+                                                Tanggal</label>
+                                            <input type="date" id="date" name="date" wire:model="date"
+                                                class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                        </div>
 
-                                                                    <div class="mt-6">
-                                                                        @if ($selectedReimbursement)
-                                                                            <label for="file_pendukung"
-                                                                                class="block text-sm font-medium text-gray-700">File
-                                                                                Pendukung:</label>
-                                                                            <a href="{{ Storage::url('app/' . $selectedReimbursement['file_pendukung']) }}"
-                                                                                target="_blank">
-                                                                                Download File
-                                                                            </a>
-                                                                        @endif
-                                                                    </div>
+                                        <div class="mt-6">
+                                            <label for="description"
+                                                class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                                            <textarea id="description" name="description" rows="3" wire:model="description"
+                                                class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+                                        </div>
 
-                                                                    {{-- <div class="mt-6" id="previewContainer"
-                                                                        style="display: none;">
-                                                                        <p>Preview:</p>
-                                                                        <div id="filePreview"></div>
-                                                                    </div> --}}
-                                                                @else
-                                                                    <p>No reimbursement selected.</p>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="mt-6">
+                                            <label for="document" class="block text-sm font-medium text-gray-700">Upload
+                                                Dokumen</label>
+                                            <input type="file" id="document" name="document" wire:model="document"
+                                                class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                        </div>
+
+
+                                        <div class="flex justify-between mt-6 space-x-4">
+                                            <button @click="modalOpen_2 = false"
+                                                class="bg-gray-300 text-gray-700 active:bg-gray-500 text-sm font-bold px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none w-1/2 ease-linear transition-all duration-150 text-center cursor-pointer"
+                                                type="button">
+                                                Batal
+                                            </button>
+                                            <button type="submit"
+                                                class="bg-green-500 text-white active:bg-primary-3 text-sm font-bold px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none w-1/2 ease-linear transition-all duration-150 text-center cursor-pointer">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -353,41 +346,6 @@
     </div>
 </div>
 <script>
-    document.getElementById('document').addEventListener('change', function() {
-        var fileInput = this;
-        var previewContainer = document.getElementById('previewContainer');
-        var filePreview = document.getElementById('filePreview');
-
-        previewContainer.style.display = 'none';
-
-        if (fileInput.files && fileInput.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                filePreview.innerHTML = '';
-
-                var extension = fileInput.files[0].name.split('.').pop().toLowerCase();
-                if (['jpg', 'jpeg', 'png'].indexOf(extension) !== -1) {
-                    var image = new Image();
-                    image.src = e.target.result;
-                    image.style.maxWidth = '100%';
-                    filePreview.appendChild(image);
-                } else if (extension === 'pdf') {
-                    var pdfEmbed = document.createElement('embed');
-                    pdfEmbed.src = e.target.result + '#toolbar=0&navpanes=0&scrollbar=0';
-                    pdfEmbed.type = 'application/pdf';
-                    pdfEmbed.style.width = '100%';
-                    pdfEmbed.style.height = '500px';
-                    filePreview.appendChild(pdfEmbed);
-                }
-
-                previewContainer.style.display = 'block';
-            };
-
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    });
-
     function actionReimbursement(id, string) {
         // console.log(id, string)
         Livewire.emit('updateStatus', id, string);

@@ -229,7 +229,7 @@
                                                                 </div>
 
                                                                 @if ($selectedEmployee)
-                                                                    <form>
+                                                                    <form wire:submit.prevent="submit">
                                                                         <div class="mt-6">
                                                                             <label for="nip_employee"
                                                                                 class="block text-sm font-medium text-gray-700">NIP
@@ -323,8 +323,6 @@
 
                                                                         </div>
                                                                     </form>
-                                                                @else
-                                                                    <p>No employee selected.</p>
                                                                 @endif
 
 
@@ -363,8 +361,8 @@
     }
 
     function deleteEmployee(id) {
-        // console.log(id)
-        Livewire.emit('deleteEmployee', id);
+        console.log(id)
+        // Livewire.emit('getDetail', id);
     }
 
     function submit() {

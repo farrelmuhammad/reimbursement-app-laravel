@@ -304,13 +304,6 @@
                                                                     </div>
 
                                                                     <div class="mt-6">
-                                                                        <label for="deskripsi"
-                                                                            class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                                                                        <textarea id="deskripsi" name="deskripsi" rows="3" disabled
-                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">{{ $selectedReimbursement['deskripsi'] }}</textarea>
-                                                                    </div>
-
-                                                                    <div class="mt-6">
                                                                         @if ($selectedReimbursement)
                                                                             <label for="file_pendukung"
                                                                                 class="block text-sm font-medium text-gray-700">File
@@ -320,6 +313,13 @@
                                                                                 Download File
                                                                             </a>
                                                                         @endif
+                                                                    </div>
+
+                                                                    <div class="mt-6">
+                                                                        <label for="deskripsi"
+                                                                            class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                                                                        <textarea id="deskripsi" name="deskripsi" rows="3" disabled
+                                                                            class="mt-1 px-3 py-2 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">{{ $selectedReimbursement['deskripsi'] }}</textarea>
                                                                     </div>
 
                                                                     {{-- <div class="mt-6" id="previewContainer"

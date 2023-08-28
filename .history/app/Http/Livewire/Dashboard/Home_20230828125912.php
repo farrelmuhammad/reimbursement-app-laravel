@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
 
 class Home extends Component
@@ -25,7 +24,6 @@ class Home extends Component
     public $document;
     public $totalApproved;
     public $totalRejected;
-    public $selectedReimbursement = null;
 
     public function updatingSearch()
     {
@@ -77,39 +75,6 @@ class Home extends Component
         return DB::table('reimbursements')->join('users', 'reimbursements.user_id', '=', 'users.id')->where('users.id', $id)->where('status', 'reject')->count();
     }
 
-    public function updateStatus($id, $string)
-    {
-        DB::table('reimbursements')->where('id', $id)->update(['status' => $string]);
-
-        $this->emit('alert', [
-            'type' => 'success',
-            'title' => 'Success!',
-            'message' => 'Reimbursement status updated to ' . ucfirst($string) . '.'
-        ]);
-    }
-
-    public function showDetails($id)
-    {
-        $selectedReimbursement = DB::table('reimbursements')
-            ->select('reimbursements.*', 'users.nama as employee_name', 'users.nip as employee_nip')
-            ->join('users', 'reimbursements.user_id', '=', 'users.id')
-            ->where('reimbursements.id', $id)
-            ->first();
-        // dd($selectedReimbursement);
-
-        $this->selectedReimbursement = [
-            'id' => $selectedReimbursement->id,
-            'employee_name' => $selectedReimbursement->employee_name,
-            'employee_nip' => $selectedReimbursement->employee_nip,
-            'user_id' => $selectedReimbursement->user_id,
-            'nama_reimbursement' => $selectedReimbursement->nama_reimbursement,
-            'tanggal' => $selectedReimbursement->tanggal,
-            'deskripsi' => $selectedReimbursement->deskripsi,
-            'status' => $selectedReimbursement->status,
-            'file_pendukung' => $selectedReimbursement->file_pendukung,
-        ];
-    }
-
     public function submit()
     {
         $this->validate([
@@ -125,18 +90,15 @@ class Home extends Component
             'tanggal' => $this->date,
             'deskripsi' => $this->description,
             'status' => 'pending',
+            'file_pendukung' => $this->document->store('documents'), // Store uploaded document
         ]);
 
+        // Upload dokumen jika ada
         if ($this->document) {
-            // Store the uploaded document using Laravel's Storage facade
-            $filePath = Storage::putFileAs('documents', $this->document, $reimbursement->id . '_' . $this->document->getClientOriginalName());
-
-            // Save the file path in the database
-            $reimbursement->file_pendukung = $filePath;
-            $reimbursement->save();
+            $this->document->storeAs('documents', $reimbursement->id . '_' . $this->document->getClientOriginalName());
         }
 
-        // Reset fields after successful submission
+        // Reset field setelah penyimpanan berhasil
         $this->reset(['reimbursement_name', 'date', 'description', 'document']);
 
         $this->emit('alert', [
@@ -144,5 +106,8 @@ class Home extends Component
             'title' => 'Success!',
             'message' => 'Reimbursement created successfully.'
         ]);
+
+        // Emit event jika diperlukan
+        // Livewire.emit('reimbursementCreated', $reimbursement->id);
     }
 }

@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Livewire\WithPagination;
 
 class Home extends Component
@@ -110,6 +109,8 @@ class Home extends Component
         ];
     }
 
+
+
     public function submit()
     {
         $this->validate([
@@ -125,18 +126,15 @@ class Home extends Component
             'tanggal' => $this->date,
             'deskripsi' => $this->description,
             'status' => 'pending',
+            'file_pendukung' => $this->document->store('documents'), // Store uploaded document
         ]);
 
+        // Upload dokumen jika ada
         if ($this->document) {
-            // Store the uploaded document using Laravel's Storage facade
-            $filePath = Storage::putFileAs('documents', $this->document, $reimbursement->id . '_' . $this->document->getClientOriginalName());
-
-            // Save the file path in the database
-            $reimbursement->file_pendukung = $filePath;
-            $reimbursement->save();
+            $this->document->storeAs('documents', $reimbursement->id . '_' . $this->document->getClientOriginalName());
         }
 
-        // Reset fields after successful submission
+        // Reset field setelah penyimpanan berhasil
         $this->reset(['reimbursement_name', 'date', 'description', 'document']);
 
         $this->emit('alert', [
@@ -144,5 +142,8 @@ class Home extends Component
             'title' => 'Success!',
             'message' => 'Reimbursement created successfully.'
         ]);
+
+        // Emit event jika diperlukan
+        // Livewire.emit('reimbursementCreated', $reimbursement->id);
     }
 }
