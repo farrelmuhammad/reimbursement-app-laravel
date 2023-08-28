@@ -29,6 +29,13 @@ You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
+## Setup Laravel Livewire project reimbursement app
+- Gunakan ```.env``` default
+- Rubah ```.env``` pada DB_NAME:  reimbursement
+- Jalankan 2 command "composer Install" & "npm install" pada tab command kedua
+- Jalankan command "php artisan migrate"
+- Jalankan 2 command "php artisan serve" & "npm run dev" pada tab command kedua untuk menjalankan web local
+
 ## Laravel Sponsors
 
 We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
